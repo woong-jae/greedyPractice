@@ -1,0 +1,38 @@
+#include <stdio.h>
+
+int calcuateMinTime(int pNum, int pTime[]);
+int main()
+{
+	int pNum;
+	int pTime[1000];
+	scanf_s("%d", &pNum);
+	for (int i = 0; i < pNum; i++) {
+		scanf_s("%d", &pTime[i]);
+	}
+	printf("%d\n", calcuateMinTime(pNum, pTime));
+	system("pause");
+}
+
+int calcuateMinTime(int pNum, int pTime[])
+{
+	int min = 0;
+	int temp;
+	for (int i = pNum - 1; i > 0; i--) {
+		for (int j = 0; j < i; j++) {
+			if (pTime[j] > pTime[j + 1])
+			{
+				temp = pTime[j];
+				pTime[j] = pTime[j + 1];
+				pTime[j + 1] = temp;
+			}
+		}
+	}
+	temp = 0;
+	for (int i = 0; i < pNum; i++) {
+		temp += pTime[i];
+		min += temp;
+	}	
+
+	return min;
+}
+
