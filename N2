@@ -1,0 +1,29 @@
+#include <stdio.h>
+
+int calMin(int N, int K, int coinVal[]);
+int main()
+{
+	int N, K;
+	int coinVal[10];
+	scanf_s("%d %d", &N, &K);
+	for (int i = 0; i < N; i++) {
+		scanf_s("%d", &coinVal[i]);
+	}
+	printf("%d\n", calMin(N, K, coinVal));
+	system("pause");
+}
+
+int calMin(int N, int K, int coinVal[])
+{
+	int count = 0;
+	int temp;
+	for (int i = N - 1; i >= 0; i--) {
+		if (K / coinVal[i] > 0)
+		{
+			temp = K / coinVal[i];
+			count += temp;
+			K -= temp*coinVal[i];
+		}
+	}
+	return count;
+}
