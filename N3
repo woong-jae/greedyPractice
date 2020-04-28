@@ -1,54 +1,108 @@
 #include <stdio.h>
+#include <stdlib.h>
 
 typedef struct {
 	int sTime;
 	int eTime;
 }meeting;
 
-void bubbleSort(meeting meetings[], int N);
-int calMin(int N, meeting meetings[]);
+typedef struct node *nodePointer;
+typedef struct node{
+	meeting data;
+	nodePointer next;
+}node;
+nodePointer first = NULL;
+
+void insertNode(nodePointer *first, meeting temp);
+int findeMin(nodePointer *first);
 int main()
 {
-	int N;
-	meeting meetings[100000];
-	scanf_s("%d", &N);
-	for (int i = 0; i < N; i++) {
-		scanf_s("%d %d", &meetings[i].sTime, &meetings[i].eTime);
+	int n;
+	meeting temp;
+	scanf_s("%d", &n);
+	for (int i = 0; i < n; i++) {
+		scanf_s("%d %d", &temp.sTime, &temp.eTime);
+		insertNode(&first, temp);
 	}
-	printf("%d\n", calMin(N, meetings));
+	printf("%d\n", findeMin(&first));
 	system("pause");
 }
 
-int calMin(int N, meeting meetings[])
+void insertNode(nodePointer *first, meeting temp)
 {
-	int endTime, result = 1, current = 0;
-	meeting prv;
-
-	bubbleSort(meetings, N);
-	prv = meetings[0];
-	for (int i = 1; i < N; i++)
+	nodePointer ptr;
+	nodePointer current;
+	nodePointer prv = NULL;
+	if (*first)
 	{
-		if (meetings[i].sTime >= prv.eTime)
+		current = *first;
+		while (1)
 		{
-			result++;
-			prv = meetings[i];
-		}
-	}
-
-	return result;
-}
-
-void bubbleSort(meeting meetings[], int N)
-{
-	meeting temp;
-	for (int i = N - 1 ; i > 0 ; i--) {
-		for (int j = 0; j < i; j++) {
-			if (meetings[i].eTime < meetings[j].eTime)
+			if (current == NULL)
 			{
-				temp = meetings[i];
-				meetings[i] = meetings[j];
-				meetings[j] = temp;
+				ptr = (nodePointer)malloc(sizeof(node));
+				ptr->data.eTime = temp.eTime;
+				ptr->data.sTime = temp.sTime;
+				ptr->next = NULL;
+				prv->next = ptr;
+				break;
+			}
+			else if (current->data.eTime >= temp.eTime)
+			{
+				if (current == *first)
+				{
+					ptr = (nodePointer)malloc(sizeof(node));
+					ptr->data.eTime = temp.eTime;
+					ptr->data.sTime = temp.sTime;
+					ptr->next = current;
+					*first = ptr;
+					break;
+				}
+				else
+				{
+					ptr = (nodePointer)malloc(sizeof(node));
+					ptr->data.eTime = temp.eTime;
+					ptr->data.sTime = temp.sTime;
+					ptr->next = current;
+					prv->next = ptr;
+					break;
+				}
+			}
+			else
+			{
+				prv = current;
+				current = current->next;
 			}
 		}
 	}
+	else
+	{
+		ptr = (nodePointer)malloc(sizeof(node));
+		ptr->data.eTime = temp.eTime;
+		ptr->data.sTime = temp.sTime;
+		ptr->next = NULL;
+		*first = ptr;
+	}
+}
+int findeMin(nodePointer *first)
+{
+	int count = 1;
+	nodePointer temp = *first;
+	nodePointer current = temp->next;
+	nodePointer prv = temp;
+	while (1)
+	{
+		if (current == NULL)
+		{
+			break;
+		}
+		if (current->data.sTime > +temp->data.eTime)
+		{
+			count++;
+			temp = current;
+		}
+		prv = current;
+		current = current->next;
+	}
+	return count;
 }
