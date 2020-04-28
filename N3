@@ -1,0 +1,54 @@
+#include <stdio.h>
+
+typedef struct {
+	int sTime;
+	int eTime;
+}meeting;
+
+void bubbleSort(meeting meetings[], int N);
+int calMin(int N, meeting meetings[]);
+int main()
+{
+	int N;
+	meeting meetings[100000];
+	scanf_s("%d", &N);
+	for (int i = 0; i < N; i++) {
+		scanf_s("%d %d", &meetings[i].sTime, &meetings[i].eTime);
+	}
+	printf("%d\n", calMin(N, meetings));
+	system("pause");
+}
+
+int calMin(int N, meeting meetings[])
+{
+	int endTime, result = 1, current = 0;
+	meeting prv;
+
+	bubbleSort(meetings, N);
+	prv = meetings[0];
+	for (int i = 1; i < N; i++)
+	{
+		if (meetings[i].sTime >= prv.eTime)
+		{
+			result++;
+			prv = meetings[i];
+		}
+	}
+
+	return result;
+}
+
+void bubbleSort(meeting meetings[], int N)
+{
+	meeting temp;
+	for (int i = N - 1 ; i > 0 ; i--) {
+		for (int j = 0; j < i; j++) {
+			if (meetings[i].eTime < meetings[j].eTime)
+			{
+				temp = meetings[i];
+				meetings[i] = meetings[j];
+				meetings[j] = temp;
+			}
+		}
+	}
+}
