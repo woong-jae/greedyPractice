@@ -1,0 +1,47 @@
+#include <stdio.h>
+
+int main()
+{
+	int n, change, count = 0, temp;
+	scanf("%d", &n);
+	
+	change = 1000 - n;
+	
+	if (change / 500 > 0)
+	{
+		temp = change / 500;
+		count += temp;
+		change -= temp * 500;
+	}
+	if (change / 100 > 0)
+	{
+		temp = change / 100;
+		count += temp;
+		change -= temp * 100;
+	}
+	if (change / 50 > 0)
+	{
+		temp = change / 50;
+		count += temp;
+		change -= temp * 50;
+	}
+	if (change / 10 > 0)
+	{
+		temp = change / 10;
+		count += temp;
+		change -= temp * 10;
+	}
+	if (change / 5 > 0)
+	{
+		temp = change / 5;
+		count += temp;
+		change -= temp * 5;
+	}
+	if (change / 1 > 0)
+	{
+		temp = change / 1;
+		count += temp;
+		change -= temp * 1;
+	}
+	printf("%d\n", count);
+}
