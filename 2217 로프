@@ -1,0 +1,37 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+int maxVal(int N, int rope[]);
+int compare(const void *a, const void *b);
+int main()
+{
+	int N, rope[100000];
+	scanf("%d", &N);
+	for (int i = 0; i < N; i++) {
+		scanf("%d", &rope[i]);
+	}
+	qsort(rope, N, sizeof(int), compare);
+	printf("%d\n", maxVal(N, rope));
+}
+
+int maxVal(int N, int rope[])
+{
+	int maxW = rope[N - 1];
+	for (int i = 0; i < N; i++) {
+		if (rope[i] * (N - i) > maxW)
+		{
+			maxW = rope[i] * (N - i);
+		}
+	}
+	return maxW;
+}
+
+int compare(const void *a, const void *b)
+{
+	int ptA = *(int *)a;
+	int ptB = *(int *)b;
+
+	if (ptA < ptB) return -1;
+	else if (ptA > ptB) return 1;
+	else return 0;
+}
