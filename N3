@@ -6,103 +6,41 @@ typedef struct {
 	int eTime;
 }meeting;
 
-typedef struct node *nodePointer;
-typedef struct node{
-	meeting data;
-	nodePointer next;
-}node;
-nodePointer first = NULL;
+int compare(const void *a, const void *b)
+{
+	meeting *ptA = (meeting *)a;
+	meeting *ptB = (meeting *)b;
 
-void insertNode(nodePointer *first, meeting temp);
-int findeMin(nodePointer *first);
+	if (ptA->eTime < ptB->eTime) return -1;
+	else if (ptA->eTime > ptB->eTime) return 1;
+    else {
+		if (ptA->sTime > ptB->sTime) return 1;
+		else if (ptA->sTime < ptB->sTime) return -1;
+		else return 0;
+	}
+}
+
+
 int main()
 {
 	int n;
-	meeting temp;
-	scanf_s("%d", &n);
+	int count = 1, current = 0;
+	meeting meetings[100000];
+	scanf("%d", &n);
 	for (int i = 0; i < n; i++) {
-		scanf_s("%d %d", &temp.sTime, &temp.eTime);
-		insertNode(&first, temp);
-	}
-	printf("%d\n", findeMin(&first));
-	system("pause");
-}
-
-void insertNode(nodePointer *first, meeting temp)
-{
-	nodePointer ptr;
-	nodePointer current;
-	nodePointer prv = NULL;
-	if (*first)
-	{
-		current = *first;
-		while (1)
-		{
-			if (current == NULL)
-			{
-				ptr = (nodePointer)malloc(sizeof(node));
-				ptr->data.eTime = temp.eTime;
-				ptr->data.sTime = temp.sTime;
-				ptr->next = NULL;
-				prv->next = ptr;
-				break;
-			}
-			else if (current->data.eTime >= temp.eTime)
-			{
-				if (current == *first)
-				{
-					ptr = (nodePointer)malloc(sizeof(node));
-					ptr->data.eTime = temp.eTime;
-					ptr->data.sTime = temp.sTime;
-					ptr->next = current;
-					*first = ptr;
-					break;
-				}
-				else
-				{
-					ptr = (nodePointer)malloc(sizeof(node));
-					ptr->data.eTime = temp.eTime;
-					ptr->data.sTime = temp.sTime;
-					ptr->next = current;
-					prv->next = ptr;
-					break;
-				}
-			}
-			else
-			{
-				prv = current;
-				current = current->next;
-			}
-		}
-	}
-	else
-	{
-		ptr = (nodePointer)malloc(sizeof(node));
-		ptr->data.eTime = temp.eTime;
-		ptr->data.sTime = temp.sTime;
-		ptr->next = NULL;
-		*first = ptr;
-	}
-}
-int findeMin(nodePointer *first)
-{
-	int count = 1;
-	nodePointer temp = *first;
-	nodePointer current = temp->next;
-	nodePointer prv = temp;
-	while (1)
-	{
-		if (current == NULL)
-		{
-			break;
-		}
-		if (current->data.sTime > +temp->data.eTime)
+		scanf("%d %d", &meetings[i].sTime, &meetings[i].eTime);
+	}	
+	qsort(meetings, n, sizeof(meeting), compare);
+	for (int i = 1; i < n; i++) {
+		if (meetings[i].eTime == meetings[i].sTime)
 		{
 			count++;
-			temp = current;
 		}
-		prv = current;
-		current = current->next;
+        else if (meetings[i].sTime >= meetings[current].eTime)
+		{
+			count++;
+			current = i;
+		}
 	}
-	return count;
+	printf("%d\n", count);
 }
