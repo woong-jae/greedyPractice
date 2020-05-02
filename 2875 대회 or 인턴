@@ -1,0 +1,58 @@
+#include <stdio.h>
+
+int maxTeam(int N, int M, int K);
+int main()
+{
+	int N, M, K;
+	scanf("%d %d %d", &N, &M, &K);
+	printf("%d\n", maxTeam(N, M, K));
+}
+
+int maxTeam(int N, int M, int K) {
+	int team, leftOver;
+	if (N / 2 > M){
+		team = M;
+		leftOver = N - M * 2;
+		if (leftOver >= K)
+		{
+			return team;
+		}
+		else
+		{
+			K -= leftOver;
+			team -= K / 3;
+			if (K % 3 > 0)
+			{
+				team--;
+			}
+			return team;
+		}
+	}
+	else if (N / 2 < M){
+		team = N / 2;
+		leftOver = M - N / 2;
+		if (leftOver >= K)
+		{
+			return team;
+		}
+		else
+		{
+			K -= leftOver;
+			team -= K / 3;
+			if (K % 3 > 0)
+			{
+				team--;
+			}
+			return team;
+		}
+	}
+	else{
+		team = M;
+		team -= K / 3;
+		if (K % 3 > 0)
+		{
+			team--;
+		}
+		return team;
+	}
+}
