@@ -1,0 +1,49 @@
+#include <stdio.h>
+#include <string.h>
+
+int getMin(char num[]);
+int main()
+{
+	char num[51];
+	gets(num);
+	printf("%d\n", getMin(num));
+}
+
+int getMin(char num[])
+{
+	int i = strlen(num) - 1;
+	int n = 1, temp = 0, top = 0;
+	int minVal = 0;
+	int numAry[50];
+	while (1)
+	{
+		if (i == 0)
+		{
+			temp += n*(num[i] - 48);
+			minVal = temp;
+			for (int a = 0; a < top; a++) {
+				minVal -= numAry[a];
+			}
+			break;
+		}
+		if (48 <= num[i] && num[i] <= 58)
+		{
+			temp += n*(num[i] - 48);
+			n *= 10;
+			i--;
+		}
+		else if (num[i] == '+')
+		{
+			n = 1;
+			i--;
+		}
+		else if (num[i] == '-')
+		{
+			n = 1;
+			numAry[top++] = temp;
+			temp = 0;
+			i--;
+		}
+	}
+	return minVal;
+}
