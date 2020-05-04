@@ -1,0 +1,61 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+typedef struct {
+	int package;
+	int single;
+}string;
+
+int minCost(int N, int M, string price[]);
+int main()
+{
+	int N, M;
+	string price[50];
+	scanf("%d %d", &N, &M);
+	for (int i = 0; i < M; i++) {
+		scanf("%d %d", &price[i].package, &price[i].single);
+	}
+	printf("%d\n", minCost(N, M, price));
+	//system("pause");
+}
+
+int minCost(int N, int M, string price[])
+{
+	int min = 0;
+	int tmp;
+	int minPackage = price[0].package, minSingle = price[0].single;
+	for (int i = 1; i < M; i++) {
+		if (price[i].package < minPackage) minPackage = price[i].package;
+		if (price[i].single < minSingle) minSingle = price[i].single;
+	}
+
+	if (minSingle * 6 <= minPackage) return N*minSingle;
+	else
+	{
+		if (N >= 6)
+		{
+			tmp = N / 6;
+			min += minPackage*tmp;
+			N -= tmp * 6;
+			if (N*minSingle > minPackage)
+			{
+				return min + minPackage;
+			}
+			else
+			{
+				return min + N*minSingle;
+			}
+		}
+		else
+		{
+			if (N*minSingle > minPackage)
+			{
+				return min + minPackage;
+			}
+			else
+			{
+				return min + N*minSingle;
+			}
+		}
+	}
+}
