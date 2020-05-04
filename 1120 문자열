@@ -1,0 +1,62 @@
+#include <stdio.h>
+#include <string.h>
+
+int findMin(char a[], char b[]);
+int main()
+{
+	char a[50], b[50];
+	scanf("%s %s", a, b);
+	printf("%d\n", findMin(a, b));
+}
+
+int findMin(char a[], char b[])
+{
+	int minVal = 0;
+	int index = 0, temp = 0;
+	if (strlen(a) == strlen(b))
+	{
+		for (int i = 0; i < strlen(a); i++) {
+			if (a[i] != b[i])
+			{
+				minVal++;
+			}
+		}
+		return minVal;
+	}
+	else
+	{	
+		while (1)
+		{
+			if (index + strlen(a) > strlen(b))
+			{
+				break;
+			}
+			if (index == 0)
+			{
+				for (int i = 0; i < strlen(a); i++) {
+					if (a[i] != b[i])
+					{
+						minVal++;
+					}
+				}
+				index++;
+			}
+			else
+			{
+				for (int i = 0; i < strlen(a); i++) {
+					if (a[i] != b[i + index])
+					{
+						temp++;
+					}
+				}
+				if (temp < minVal)
+				{
+					minVal = temp;
+				}
+				temp = 0;
+				index++;
+			}
+		}
+		return minVal;
+	}
+}
