@@ -1,0 +1,66 @@
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+
+int BSearch(int *arr, int len, int target);
+int lis(int n, int port[]);
+int main()
+{
+	int port[40000], n;
+	scanf("%d", &n);
+	n++;
+	for (int i = 1; i < n; i++) {
+		scanf(" %d", &port[i]);
+	}
+	printf("%d\n", lis(n, port));
+	//system("pause");
+}
+
+int lis(int n, int port[])
+{
+	int x[40000];
+	int maxSq[40000];
+	int index = 0, tmp;
+	x[0] = 0; maxSq[0] = 0;
+	for (int i = 1; i < n; i++) {
+		if (x[index] < port[i])
+		{
+			x[++index] = port[i];
+			maxSq[i] = index;
+		}
+		else
+		{
+			tmp = BSearch(&x, index, port[i]);
+			x[tmp] = port[i];
+			maxSq[i] = tmp;
+		}
+	}
+	return index;
+}
+
+int BSearch(int *arr, int len, int target)
+{
+	int first = 0;
+	int last = len - 1;
+	int mid;
+
+	while (first <= last)
+	{
+		mid = (first + last) / 2;
+		if (target == arr[mid])
+		{
+			return mid;
+		}
+		else
+		{
+			if (target > arr[mid])
+			{
+				first = mid + 1;
+			}
+			else
+			{
+				last = mid - 1;
+			}
+		}
+	}
+	return first;
+}
