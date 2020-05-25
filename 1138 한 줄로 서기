@@ -1,0 +1,40 @@
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+
+void printLine(int n, int mem[]);
+int main()
+{
+	int n;
+	int mem[10];
+	scanf("%d", &n);
+	for (int i = 0; i < n; i++) {
+		scanf(" %d", &mem[i]);
+	}
+	printLine(n, mem);
+	system("pause");
+}
+
+void printLine(int n, int mem[])
+{
+	int line[10] = { 0 };
+	int index = 1, tmp, j;
+
+	for (int i = 0; i < n; i++) {
+		tmp = mem[i];
+		j = 0;
+		while (1)
+		{
+			if (line[j] == 0 && tmp == 0) break;
+			if (line[j] == 0)
+			{
+				tmp--;
+			}
+			j++;
+		}
+		line[j] = index++;
+	}
+
+	for (int i = 0; i < n; i++) {
+		printf("%d ", line[i]);
+	}
+}
