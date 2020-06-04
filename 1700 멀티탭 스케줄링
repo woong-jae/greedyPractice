@@ -1,0 +1,59 @@
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+
+int main()
+{
+	int n, k, order[100];
+	int multiTab[100] = { 0, }, pluggedin, used = 0;
+	int changed = 0, index, lastIdx, changeIdx;
+
+	scanf("%d %d", &n, &k);
+	for (int i = 0; i < k; i++) {
+		scanf(" %d", &order[i]);
+	}
+
+	for (int i = 0; i < k; i++) {
+		pluggedin = 0;
+		for (int j = 0; j < n; j++) {
+			if (multiTab[j] == order[i])
+			{
+				pluggedin++;
+				break;
+			}
+		}
+
+		if (pluggedin == 1)//case 1: plugged in
+		{
+			continue;
+		}
+
+		if (used < n)//case 2: not plugged & not full
+		{
+			multiTab[used++] = order[i];
+		}
+		else//case 3: not plugged & full
+		{
+			changeIdx = 0; lastIdx = -1;
+			for (int j = 0; j < n; j++) {
+				index = 0;
+				for (int l = i + 1; l < k; l++) {
+					if (multiTab[j] == order[l])
+					{
+						break;
+					}
+					index++;
+				}
+				if (index > lastIdx)
+				{
+					changeIdx = j;
+					lastIdx = index;
+				}
+			}
+			multiTab[changeIdx] = order[i];
+			changed++;
+		}
+
+	}
+	printf("%d\n", changed);
+	system("pause");
+}
