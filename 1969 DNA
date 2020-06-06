@@ -1,0 +1,70 @@
+#include <stdio.h>
+
+int main()
+{
+    int n, m, max, hammingD = 0;
+    char dna[1000][50], s[50];
+    int nucleo[4] = { 0,};//A, C, G, T 순서
+    
+    scanf("%d %d", &n, &m);
+    for(int i = 0; i < n; i++){
+        scanf(" %s", dna[i]);
+    }
+    
+    
+    for(int i = 0; i < m; i++){
+        for(int j = 0; j < 4; j++){
+            nucleo[j] = 0;
+        }
+        
+        for(int j = 0; j < n; j++){
+            switch(dna[j][i]){
+                case 'A':
+                    nucleo[0]++;
+                    break;
+                case 'C':
+                    nucleo[1]++;
+                    break;
+                case 'G':
+                    nucleo[2]++;
+                    break;
+                case 'T':
+                    nucleo[3]++;
+                    break;
+            }
+        }
+        
+        max = 3;
+        for(int j = 2; j >= 0; j--){
+            if(nucleo[j] >= nucleo[max])
+            {
+                max = j;
+            }
+        }
+        switch(max){
+            case 0:
+                s[i] = 'A';
+                break;
+            case 1:
+                s[i] = 'C';
+                break;
+            case 2:
+                s[i] = 'G';
+                break;
+            case 3:
+                s[i] = 'T';
+                break;
+        }
+        
+        for(int j = 0; j < n; j++){
+            if(dna[j][i] != s[i])
+            {
+                hammingD++;
+            }
+        }
+    }
+    
+    s[m] = '\0';
+    puts(s);
+    printf("%d\n", hammingD);
+}
