@@ -1,0 +1,113 @@
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+#include <stdlib.h>
+
+typedef struct gem {
+	int m;
+	int v;
+	int used;
+}gem;
+gem heap[300000];
+int current_size = 0;
+
+int compareG(const void *a, const void *b)
+{
+	gem *ta = (gem *)a;
+	gem *tb = (gem *)b;
+
+	if (ta->m < tb->m) return -1;
+	else if (ta->m > tb->m) return 1;
+	else return 0;
+}
+int compare(const void *a, const void *b)
+{
+	int ta = *(int *)a;
+	int tb = *(int *)b;
+	
+	if (ta < tb) return -1;
+	else if (ta > tb) return 1;
+	else return 0;
+}
+gem pop(int *current_size_ptr);
+void push(gem item, int *current_size_ptr);
+int main()
+{
+	int n, k, index;
+	int c[300000];
+	gem gems[300000];
+	long long max = 0;
+
+
+	scanf("%d %d", &n, &k);
+	for (int i = 0; i < n; i++) {
+		scanf(" %d %d", &gems[i].m, &gems[i].v);
+		gems[i].used = 0;
+	}
+	for (int i = 0; i < k; i++) {
+		scanf(" %d", &c[i]);
+	}
+	
+	qsort(c, k, sizeof(int), compare);
+	qsort(gems, n, sizeof(gem), compareG);
+
+	index = 0;
+	for (int i = 0; i < k; i++) {
+		while (index < n && gems[index].m <= c[i])
+		{
+			push(gems[index++], &current_size);
+		}
+
+		if (current_size > 0)
+		{
+			max += heap[1].v;
+			pop(&current_size);
+		}
+	}
+	
+	printf("%li\n", max);
+	system("pause");
+}
+
+void push(gem item, int *current_size_ptr)
+{
+	int i;
+	if (*current_size_ptr >= 300000) {
+		fprintf(stderr, "The heap is full\n");
+		exit(EXIT_FAILURE);
+	}
+	i = ++(*current_size_ptr);
+	while ((i != 1) && (item.v > heap[i / 2].v))
+	{
+		heap[i] = heap[i / 2];
+		i /= 2;
+	}
+	heap[i] = item;
+}
+
+gem pop(int *current_size_ptr)
+{
+	int parent, child;
+	gem item, temp;
+	if (*current_size_ptr == 0) {
+		fprintf(stderr, "The heap is empty\n");
+		exit(EXIT_FAILURE);
+	}
+	item = heap[1];
+	temp = heap[(*current_size_ptr)--];
+	parent = 1;
+	child = 2;
+	while (child <= *current_size_ptr)
+	{
+		if ((child < *current_size_ptr) && (heap[child].v < heap[child + 1].v))
+		{
+			child++;
+		}
+		if (temp.v >= heap[child].v) break;
+		/* move to the next lower level */
+		heap[parent] = heap[child];
+		parent = child;
+		child *= 2;
+	}
+	heap[parent] = temp;
+	return item;
+}
