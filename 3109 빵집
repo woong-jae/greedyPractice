@@ -1,0 +1,58 @@
+#include <stdio.h>
+#define FALSE 0
+#define TRUE 1
+
+char route[10000][500];
+short visited[10000][500];
+int count = 0;
+
+int tracking(int r, int c, int curR, int curC);
+void initializeVisited(int r, int c);
+int main()
+{
+    int r, c;
+    int found;
+    scanf("%d %d", &r, &c);
+    for(int i = 0; i < r; i++) {
+        for(int j = 0; j < c; j++) {
+            scanf(" %c", &route[i][j]);
+        }
+    }
+    initializeVisited(r, c);
+    for(int i = 0; i < r; i++) {
+        found = tracking(r, c, i, 0);
+        if(found == 1)
+        {
+            count++;
+        }
+    }
+    printf("%d\n", count);
+}
+
+int tracking(int r, int c, int curR, int curC)//길을 찾았다면 1을, 찾지 못했다면 0을 반환한다.
+{
+    int temp;
+    if(curC == c - 1){//마지막 열에 도달(연결되는 길을 찾음)
+        visited[curR][curC] = TRUE;
+        return 1;
+    }
+    
+    for(int i = -1; i < 2; i++) {//오른 대각선 위, 오른쪽, 오른 대각선 아래 탐색
+        if((curR + i >= 0 && curR + i < 10000) && route[curR + i][curC + 1] == '.' && visited[curR + i][curC + 1] == FALSE) {
+            visited[curR + i][curC + 1] = TRUE;
+            temp = tracking(r, c, curR + i, curC + 1);
+            if(temp == 1) return 1;//반환값이 1이라면 연결되는 길을 찾았다는 뜻이기 때문에, 더이상 다른 노드를 검사할 필요가 없음.
+        }
+    }
+    
+    return 0;//길을 찾지 못함.
+}
+
+void initializeVisited(int r, int c)
+{
+    for(int i = 0; i < r; i++) {
+        for(int j = 0; j < c; j++) {
+            visited[r][c] = FALSE;
+        }
+    }
+}
