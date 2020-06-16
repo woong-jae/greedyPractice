@@ -1,0 +1,51 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+char stack[500000];
+int top = -1;
+
+void push(char c)
+{
+    if(top >= 500000 - 1)
+    {
+        fprintf(stderr, "Stack is full!");
+        exit(EXIT_FAILURE);
+    }
+    stack[++top] = c;
+}
+
+char pop()
+{
+    if(top < 0)
+    {
+        fprintf(stderr, "Stack is empty!");
+        exit(EXIT_FAILURE);
+    }
+    return stack[top--];
+}
+
+int main( )
+{
+    int n, k;
+    char number[500000];
+    
+    scanf("%d %d", &n, &k);
+    scanf("%s", number);
+    
+    push(number[0]);
+    for(int i = 1; i < n; i++){
+        while(k > 0 && top >= 0 && stack[top] < number[i])
+        {
+            pop();
+            k--;
+        }
+        push(number[i]);
+    }
+    while (k > 0) {
+        pop();
+        k--;
+    }
+    push('\0');
+    
+    printf("%s\n", stack);
+}
