@@ -31,16 +31,16 @@ int main()
     
     qsort(dices, 6, sizeof(dice), compare);
     
-    minIndex = dices[0].face;
+    minIndex = 0;
     for(int i = 1; i < 6; i++) {
-        if(minIndex + dices[i].face != 5)
+        if(dices[minIndex].face + dices[i].face != 5)
         {
             minIndex2 = i;
             break;
         }
     }
     for (int i = 0; i < 6; i++) {
-        if(dices[i].face + minIndex != 5 && dices[i].face + minIndex2 != 5
+        if(dices[i].face + dices[minIndex].face != 5 && dices[i].face + dices[minIndex2].face != 5
            && i != minIndex && i != minIndex2)
         {
             if(minIndex3 == -1)
@@ -56,15 +56,14 @@ int main()
     
     if(n == 1)
     {
-        for(int i = 0; i < 6; i++){
-            maxVal += dices[i].val;
+        for(int i = 0; i < 5; i++){
+                maxVal += dices[i].val;
         }
         printf("%lld\n", maxVal);
     }
     else{
-        maxVal += (dices[minIndex].val + dices[minIndex2].val + dices[minIndex3].val) * 4;
-        maxVal += (n - 1) * 4 * (long long)(dices[minIndex].val + dices[minIndex2].val) + (4 * n - 8) * (long long)(dices[minIndex].val + dices[minIndex2].val);
-        maxVal += (n - 2) * (n - 2) * (long long)dices[minIndex].val + (n - 2) * (n + 1) * (long long)dices[minIndex].val;
+        maxVal = (long long)(n - 2) * (5 * n + 2) * dices[minIndex].val
+        + 4 * ((long long)(2 * (dices[minIndex].val + (n - 1) * dices[minIndex2].val)) + dices[minIndex3].val);
         printf("%lld\n", maxVal);
     }
 }
