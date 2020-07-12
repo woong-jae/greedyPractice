@@ -1,0 +1,55 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+
+int main()
+{
+    char board[500];
+    int index_len, pos = 1;
+    char *index, *tok_end;
+    
+    scanf("%s", board);
+    
+    index = board;
+    while(*index)
+    {
+        if(*index == '.') {
+            index++;
+        }
+        else {
+            index_len = 0;
+            tok_end = index;
+            while(*tok_end != '.' && *tok_end)
+            {
+                tok_end++;
+                index_len++;
+            }
+            
+            if(index_len % 2 > 0) {
+                printf("-1\n");
+                pos= 0;
+                break;
+            }
+            else if(index_len >= 4) {
+                for(int i = 0; i < index_len / 4; i++) {
+                    for(int j = 0; j < 4; j++) {
+                        *index = 'A';
+                        index++;
+                    }
+                }
+                for(int i = 0; i < index_len % 4; i++) {
+                    *index = 'B';
+                    index++;
+                }
+            }
+            else {
+                for(int i = 0; i < index_len % 4; i++) {
+                    *index = 'B';
+                    index++;
+                }
+            }
+        }
+    }
+    if(pos)
+        printf("%s\n", board);
+}
